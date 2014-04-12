@@ -717,6 +717,8 @@ static int rptvp5150_init(struct v4l2_subdev *sd, u32 val)
 
 	
 	s3c_gpio_cfgall_range(EXYNOS4_GPD0(2), 2, S3C_GPIO_SFN(3), S3C_GPIO_PULL_UP);
+	
+	gpio_direction_output(EXYNOS4212_GPM1(1), 1);
 
 	gpio_direction_output(EXYNOS4212_GPM3(0), 1);
 	mdelay(100);

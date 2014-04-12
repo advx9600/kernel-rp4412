@@ -3261,7 +3261,7 @@ static int rp5065_init(struct v4l2_subdev *sd, u32 val)
 	gpio_request(EXYNOS4212_GPM3(0), "camera_pw");
 	gpio_request(EXYNOS4_GPL0(0), "camera_pd0");
 
-	gpio_direction_output(EXYNOS4212_GPM1(1), 1);
+	gpio_direction_output(EXYNOS4212_GPM1(1), 0);
 
 	
 	ghm5065 = 1;
@@ -3291,6 +3291,9 @@ static int rp5065_init(struct v4l2_subdev *sd, u32 val)
 	
 			gpio_direction_output(EXYNOS4_GPL0(0), 1); 
 			mdelay(100);//50
+			gpio_direction_output(EXYNOS4_GPL0(1), 1); 
+			mdelay(100);//50
+
 
 
 			for (i = 0; i < HM5065_INIT_REG1S; i++) 
