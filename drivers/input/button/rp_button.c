@@ -22,41 +22,13 @@
 static struct timer_list timer;
 static struct input_dev * input;
 
-enum  {
-	BUTTON_BACK = 0,
-	BUTTON_MENU,
-	BUTTON_HOME,
-	BUTTON_VOLUMEUP,
-	BUTTON_VOLUMEDOWN,
-	BUTTON_UP,
-	BUTTON_DOWN,
-	BUTTON_LEFT,
-	BUTTON_RIGHT,
-	BUTTONE_MAX
-};
-
 struct st_s3c_key{
 	int key_code;
 	uint key_pin;
 	int key_history_flg;
 };
 
-#define MAX_BUTTON_CNT 		(BUTTONE_MAX)
-
-
-static int s3c_Keycode[MAX_BUTTON_CNT] = {
-	KEY_BACK, 
-	KEY_MENU, 
-	KEY_HOME, 
-	KEY_VOLUMEUP, 
-	KEY_VOLUMEDOWN,
-	KEY_UP, 
-	KEY_DOWN,
-	KEY_LEFT,
-	KEY_RIGHT,
-};
-
-static struct st_s3c_key s3c_key_para[MAX_BUTTON_CNT] = {
+static struct st_s3c_key s3c_key_para[] = {
 		{ KEY_BACK, EXYNOS4_GPX3(3), 0},
 		{ KEY_MENU, EXYNOS4_GPX3(2), 0},
 		{ KEY_HOME, EXYNOS4_GPX3(1), 0},
@@ -65,8 +37,13 @@ static struct st_s3c_key s3c_key_para[MAX_BUTTON_CNT] = {
 		{ KEY_UP, EXYNOS4_GPX2(4), 0},
 		{ KEY_DOWN, EXYNOS4_GPX2(5), 0},
 		{ KEY_LEFT, EXYNOS4_GPX2(0), 0},
-		{ KEY_RIGHT, EXYNOS4_GPX2(1), 0},		
+		{ KEY_F13, EXYNOS4_GPX2(1), 0},		
 };
+
+#define MAX_BUTTON_CNT 	ARRAY_SIZE(s3c_key_para)
+
+
+static int s3c_Keycode[MAX_BUTTON_CNT];
 
 static void s3cbutton_timer_handler(unsigned long data)
 {
@@ -106,6 +83,7 @@ static int s3c_button_probe(struct platform_device *pdev)
 		gpio_request(s3c_key_para[i].key_pin, "s3c-button");
 		s3c_gpio_setpull(s3c_key_para[i].key_pin, S3C_GPIO_PULL_UP);
 		gpio_direction_input(s3c_key_para[i].key_pin);
+		s3c_Keycode[i]=s3c_key_para[i].key_code;
 	}
 
 	input = input_allocate_device();
